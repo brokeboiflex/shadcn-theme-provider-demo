@@ -38,7 +38,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   type ChartConfig,
   ChartContainer,
@@ -134,9 +134,6 @@ function TeamCard() {
           <div key={m.email} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src={`https://api.dicebear.com/9.x/initials/svg?seed=${m.initials}`}
-                />
                 <AvatarFallback>{m.initials}</AvatarFallback>
               </Avatar>
               <div>
