@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
+  base: "/shadcn-theme-provider-demo/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

@@ -4,12 +4,14 @@ import { ThemeProvider } from "shadcn-theme-provider"
 import "./index.css"
 import App from "./App.tsx"
 
+const base = import.meta.env.BASE_URL
+
 const themes = {
-  default: "/themes/default.css",
-  ocean: "/themes/ocean.css",
-  rose: "/themes/rose.css",
-  "candy land": "/themes/candy-land.css",
-  "neo brutalism": "/themes/neo-brutalism.css",
+  default: `${base}themes/default.css`,
+  ocean: `${base}themes/ocean.css`,
+  rose: `${base}themes/rose.css`,
+  "candy land": `${base}themes/candy-land.css`,
+  "neo brutalism": `${base}themes/neo-brutalism.css`,
 }
 
 createRoot(document.getElementById("root")!).render(
