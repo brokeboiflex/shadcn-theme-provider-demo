@@ -5,8 +5,6 @@ import {
   Sun,
   Moon,
   Monitor,
-  Palette,
-  Check,
   Star,
   Bell,
   Mail,
@@ -35,7 +33,6 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -407,8 +404,7 @@ function ActionsCard() {
 // ─── Main App ──────────────────────────────────────────────────────
 
 function App() {
-  const { mode, setMode, palette, setPalette, themes, resolvedMode } =
-    useTheme();
+  const { mode, setMode, palette, setPalette, themes } = useTheme();
   const hasPickedRandom = useRef(false);
 
   // On mount: pick a random theme
@@ -474,7 +470,7 @@ function App() {
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
-          <Select value={palette} onValueChange={setPalette}>
+          <Select value={palette} onValueChange={(v) => v && setPalette(v)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue className={"capitalize"} />
             </SelectTrigger>
