@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { useTheme } from "shadcn-theme-provider";
 import type { ThemeMode } from "shadcn-theme-provider";
 import {
@@ -39,17 +39,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+const LazyRevenueChartCard = lazy(() => import("./revenue-chart-card"));
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -117,12 +112,13 @@ function PaymentCard() {
   );
 }
 
+const members = [
+  { name: "Sofia Davis", email: "sofia@example.com", initials: "SD" },
+  { name: "Alex Chen", email: "alex@example.com", initials: "AC" },
+  { name: "Jamie Lee", email: "jamie@example.com", initials: "JL" },
+];
+
 function TeamCard() {
-  const members = [
-    { name: "Sofia Davis", email: "sofia@example.com", initials: "SD" },
-    { name: "Alex Chen", email: "alex@example.com", initials: "AC" },
-    { name: "Jamie Lee", email: "jamie@example.com", initials: "JL" },
-  ];
   return (
     <Card>
       <CardHeader>
@@ -158,6 +154,12 @@ function TeamCard() {
   );
 }
 
+const notificationItems = [
+  { icon: Mail, title: "Email notifications", desc: "Receive emails for new messages" },
+  { icon: Bell, title: "Push notifications", desc: "Receive push on your device" },
+  { icon: Star, title: "Activity updates", desc: "Weekly digest of activity" },
+];
+
 function NotificationsCard() {
   return (
     <Card>
@@ -168,23 +170,7 @@ function NotificationsCard() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        {[
-          {
-            icon: Mail,
-            title: "Email notifications",
-            desc: "Receive emails for new messages",
-          },
-          {
-            icon: Bell,
-            title: "Push notifications",
-            desc: "Receive push on your device",
-          },
-          {
-            icon: Star,
-            title: "Activity updates",
-            desc: "Weekly digest of activity",
-          },
-        ].map(({ icon: Icon, title, desc }) => (
+        {notificationItems.map(({ icon: Icon, title, desc }) => (
           <div key={title} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Icon className="h-4 w-4 text-muted-foreground" />
@@ -243,6 +229,8 @@ function ChatCard() {
   );
 }
 
+const defaultFontSize = [16];
+
 function SettingsCard() {
   return (
     <Card>
@@ -260,7 +248,7 @@ function SettingsCard() {
         </div>
         <div className="space-y-2">
           <Label>Font size</Label>
-          <Slider defaultValue={[16]} min={12} max={24} step={1} />
+          <Slider defaultValue={defaultFontSize} min={12} max={24} step={1} />
         </div>
         <div className="space-y-2">
           <Label>Sync progress</Label>
@@ -284,47 +272,6 @@ function SettingsCard() {
             </div>
           </RadioGroup>
         </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-const chartData = [
-  { month: "Jan", revenue: 4200, expenses: 2800 },
-  { month: "Feb", revenue: 3800, expenses: 2200 },
-  { month: "Mar", revenue: 5100, expenses: 3100 },
-  { month: "Apr", revenue: 4600, expenses: 2600 },
-  { month: "May", revenue: 6200, expenses: 3400 },
-  { month: "Jun", revenue: 7800, expenses: 3800 },
-];
-
-const chartConfig = {
-  revenue: { label: "Revenue", color: "var(--chart-1)" },
-  expenses: { label: "Expenses", color: "var(--chart-2)" },
-} satisfies ChartConfig;
-
-function RevenueChartCard() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Revenue</CardTitle>
-        <CardDescription>Monthly revenue vs expenses</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-[200px] w-full">
-          <BarChart data={chartData} accessibilityLayer>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <Bar dataKey="revenue" fill="var(--color-revenue)" radius={4} />
-            <Bar dataKey="expenses" fill="var(--color-expenses)" radius={4} />
-          </BarChart>
-        </ChartContainer>
       </CardContent>
     </Card>
   );
@@ -363,6 +310,13 @@ function FeedbackCard() {
   );
 }
 
+const actionItems = [
+  { icon: Plus, label: "New project", variant: "default" as const },
+  { icon: Users, label: "Invite team", variant: "secondary" as const },
+  { icon: Settings, label: "Settings", variant: "outline" as const },
+  { icon: ArrowRight, label: "View docs", variant: "ghost" as const },
+];
+
 function ActionsCard() {
   return (
     <Card>
@@ -370,20 +324,7 @@ function ActionsCard() {
         <CardTitle>Quick Actions</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        {[
-          { icon: Plus, label: "New project", variant: "default" as const },
-          { icon: Users, label: "Invite team", variant: "secondary" as const },
-          {
-            icon: Settings,
-            label: "Settings",
-            variant: "outline" as const,
-          },
-          {
-            icon: ArrowRight,
-            label: "View docs",
-            variant: "ghost" as const,
-          },
-        ].map(({ icon: Icon, label, variant }) => (
+        {actionItems.map(({ icon: Icon, label, variant }) => (
           <Button
             key={label}
             variant={variant}
@@ -486,7 +427,9 @@ function App() {
       <div className="mx-auto max-w-5xl px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-3">
-            <RevenueChartCard />
+            <Suspense fallback={<div className="h-[300px] rounded-lg border bg-card" />}>
+              <LazyRevenueChartCard />
+            </Suspense>
           </div>
           <div className="flex flex-col gap-4">
             <PaymentCard />
