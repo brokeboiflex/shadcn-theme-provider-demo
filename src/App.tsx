@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense } from "react";
 import { useTheme } from "shadcn-theme-provider";
 import type { ThemeMode } from "shadcn-theme-provider";
 import {
@@ -343,14 +343,6 @@ function ActionsCard() {
 
 function App() {
   const { mode, setMode, palette, setPalette, themes } = useTheme();
-  const hasPickedRandom = useRef(false);
-
-  // On mount: pick a random theme
-  useEffect(() => {
-    if (hasPickedRandom.current || themes.length < 2) return;
-    hasPickedRandom.current = true;
-    setPalette(themes[Math.floor(Math.random() * themes.length)]);
-  }, [themes, setPalette]);
 
   return (
     <div className="min-h-screen bg-background">

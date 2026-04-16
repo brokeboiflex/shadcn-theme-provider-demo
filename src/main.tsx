@@ -14,9 +14,22 @@ const themes = {
   "neo brutalism": `${base}themes/neo-brutalism.css`,
 }
 
+// Preload all theme CSS files so switching is instant
+for (const href of Object.values(themes)) {
+  const link = document.createElement("link")
+  link.rel = "preload"
+  link.as = "style"
+  link.href = href
+  document.head.appendChild(link)
+}
+
+// Pick a random starting palette so the demo feels fresh each visit
+const themeNames = Object.keys(themes)
+const randomPalette = themeNames[Math.floor(Math.random() * themeNames.length)]
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider themes={themes} defaultMode="light" defaultPalette="default">
+    <ThemeProvider themes={themes} defaultMode="light" defaultPalette={randomPalette}>
       <App />
     </ThemeProvider>
   </StrictMode>,
