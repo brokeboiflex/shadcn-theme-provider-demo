@@ -15,8 +15,9 @@ import {
   CreditCard,
   Users,
   ArrowRight,
+  ExternalLink,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -437,6 +438,41 @@ function App() {
             <SettingsCard />
           </div>
         </div>
+
+        <section className="mt-10" aria-labelledby="other-projects-title">
+          <div className="mb-5">
+            <h2
+              id="other-projects-title"
+              className="text-2xl font-semibold tracking-tight"
+            >
+              Check out my other projects
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              More open-source tools built for React and shadcn/ui.
+            </p>
+          </div>
+
+          <Card className="max-w-xl">
+            <CardHeader>
+              <CardTitle>maily.cn</CardTitle>
+              <CardDescription>
+                A production-ready email editor, renderer, and mailbox that
+                installs as source through shadcn.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <a
+                href="https://brokeboiflex.github.io/maily.cn/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                View demo
+                <ExternalLink />
+              </a>
+            </CardContent>
+          </Card>
+        </section>
       </div>
     </div>
   );
